@@ -1,0 +1,28 @@
+body {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: #eee;
+  font-family: 微軟正黑體, 蘋果儷中黑, 黑體, "Hiragino Sans GB", "儷黑 Pro", "Myriad Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.quiz {
+  padding: 10px;
+  margin: 5px auto;
+  height: 145px;
+  border: 0px solid blue;
+  box-sizing: border-box;
+  box-shadow: 2px 4px 5px #9999BB;
+  text-align: center;
+}
+.form-check, .form-group{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.compact{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.navbar{
+    box-shadow: 2px 2px 5px #8888AA;
+}
