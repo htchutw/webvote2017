@@ -29,7 +29,7 @@ function GetUserVotes($sID, $sClass) {
     $pdo = new PDO($dsn, $dbconfig['username'],$dbconfig['password']);
     $pdo->query("set names utf8");
 
-    $sql = "SELECT VID, VScore, XID FROM vote_record WHERE SID = :SID AND SClass =:SClass ORDER BY XID DESC";
+    $sql = "SELECT VID, VScore, XID, XName FROM vote_record WHERE SID = :SID AND SClass =:SClass ORDER BY XID ASC";
     $pdoStatement = $pdo->prepare($sql);
     $pdoStatement->bindValue(':SID', $sID, PDO::PARAM_STR);
     $pdoStatement->bindValue(':SClass', $sClass, PDO::PARAM_STR);
@@ -62,13 +62,7 @@ function GetUserVotes($sID, $sClass) {
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <h2><span class="badge badge-pill badge-primary"><i class="fa fa-graduation-cap" ></i>資訊與科技期中網頁互評</span></h2>
         <h2><span class="badge badge-pill badge-info"><i class="fa fa-users" ></i>評審：<?php echo $sID?>(<?php echo $sName?>)</span></h2>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <h3><a class="nav-link" href="logout.php"><span class="badge badge-pill badge-danger"><i class="fa fa-sign-out" aria-hidden="true"></i>登出投票系統</span></a></h3>
-                </li>
-            </ul>
-        </div>
+        <h3><a class="nav-link" href="logout.php"><span class="badge badge-pill badge-danger"><i class="fa fa-sign-out" aria-hidden="true"></i>登出投票系統</span></a></h3>
     </nav>
     <div class="container-fluid"> 
 <?php 
@@ -77,52 +71,112 @@ $rowMax = $studentNum/4;
 for ($rowNo = 0; $rowNo <$rowMax && $voteNo < $studentNum; $rowNo++) {
     echo '<div class="row">';
     for ($colNo = 0; $colNo <4 && $voteNo < $studentNum; $colNo++, $voteNo++) {
-        $curVote = $votes[voteNo];
+        $curVote = $votes[$voteNo];
+        $s0=$s5=$s6=$s7=$s8=$s9=$s10="";
+        switch ($curVote["VScore"]) {
+            case 0:
+                $s0="checked";
+                break;
+            case 5:
+                $s5="checked";
+                break;
+            case 6:
+                $s6="checked";
+                break;
+            case 7:
+                $s7="checked";
+                break;
+            case 8:
+                $s8="checked";
+                break;
+            case 9:
+                $s9="checked";
+                break;
+            case 10:
+                $s10="checked";
+                break;
+        }
+        $voteID = $curVote["VID"];
         print'                   
         <div class="quiz col-sm-12 col-xs-12 col-md-6 col-lg-3">
             <form>
-                <div class="alert alert-info compact">'.$curVote["XID"].'
+                <div class="alert alert-info compact">'.$curVote["XID"].'('.$curVote["XName"].')
                 </div>
                 <div class="form-group">
-                    <a target="_blank" href="http://210.70.80.111/'.$curVote["XID"].'htchu/" class="alert alert-danger compact">網頁：點我</a>
+                    <a target="_blank" href="http://210.70.80.111/'.$curVote["XID"].'/" class="alert alert-danger compact">網頁：點我</a>
                 </div>
                 <div class="form-check form-check-inline">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="x10500000" id="inlineCheckbox0" value="option1" checked> 0
-                    </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="x10500000" id="inlineCheckbox6" value="option2"> 6
-                    </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="x10500000" id="inlineCheckbox7" value="option3"> 7
+                        <input class="form-check-input" type="radio" name="x10500000" id="'.$voteID.'" value="0"'.$s0.'> 0
                     </label>
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="x10500000" id="inlineCheckbox8" value="option4"> 8
+                        <input class="form-check-input" type="radio" name="x10500000" id="'.$voteID.'" value="6" '.$s6.'> 6
                     </label>
-                    </div>
-                    <div class="form-check form-check-inline">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="x10500000" id="inlineCheckbox9" value="option5"> 9
+                        <input class="form-check-input" type="radio" name="x10500000" id="'.$voteID.'" value="7" '.$s7.'> 7
                     </label>
-                    </div>
-                    <div class="form-check form-check-inline">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="x10500000" id="inlineCheckbox10" value="option6"> 10
+                        <input class="form-check-input" type="radio" name="x10500000" id="'.$voteID.'" value="8" '.$s8.'> 8
+                    </label>
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="x10500000" id="'.$voteID.'" value="9" '.$s9.'> 9
+                    </label>
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="x10500000" id="'.$voteID.'" value="10"'.$s10.'> 10
                     </label>
                 </div>
             </form>
         </div>';
     }
-    echo '<\div>';
+    echo '</div>';
 }
 ?>
 </div><!--class="container-fluid" -->
 
+<script type="text/javascript">
+var rr =  document.querySelectorAll('input[type="radio"]');
+for (var i = 0; i < rr.length; i++)
+{
+    rr[i].addEventListener("change", handler, false);
+}
+function handler(event) {
+    //alert('update_vote.php?VID='+this.id+'&VScore='+this.value);
 
+    var oReq = new XMLHttpRequest();
+    
+    oReq.open('GET', 'update_vote.php?VID='+this.id+'&VScore='+this.value);
+    /*oReq.onreadystatechange = function (aEvt) {
+        if (oReq.readyState == 4) {
+            if(oReq.status == 200)
+                alert(oReq.responseText);
+            else
+                alert("Error loading page\n");
+        }
+    };*/
+    //oReq.addEventListener("load", reqListener);
+    oReq.send();
+    /*xhr = new XMLHttpRequest();
+    xhr.open('POST', 'update_test.php');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200 ) {
+            alert( xhr.readyState+'='+ xhr.responseText);
+        }
+        else if (xhr.status !== 200) {
+            alert('Request failed.  Returned status of ' + xhr.status);
+        }
+    };
+    xhr.send(encodeURI('SData=' + this.id));*/
+
+
+}
+function reqListener () {
+  console.log(this.readyState);
+  alert(this.readyState);
+}
+
+
+</script>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
