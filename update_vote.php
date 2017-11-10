@@ -3,9 +3,10 @@
 
 if (isset($_REQUEST["VID"]))
 {
-    /*require_once 'testlog.php';
+
     $vID=htmlspecialchars($_REQUEST["VID"]);
     $vScore=htmlspecialchars($_REQUEST["VScore"]);
+    /*require_once 'testlog.php';
 	$log = new Logging();
 	$log->lfile('testlog-sql20171110.txt');
 	$log->lwrite($vID);	$log->lwrite($vScore);
